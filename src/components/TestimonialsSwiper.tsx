@@ -38,7 +38,7 @@ const mockTestimonials: Testimonial[] = [
       "Sales Fortuna has made sales so much easier for us. It saves time, simplifies the whole process, and helps us land more deals without hassle.",
     author: {
       name: "Olivia Haues",
-      title: "Owner, Starlight Creations & Co-Founder, Sales Fortuna",
+      title: "Owner, Starlight Creations & Co-Founder",
       avatar: "https://i.pravatar.cc/300?img=2",
     },
   },

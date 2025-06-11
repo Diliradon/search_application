@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
+import type { Swiper as SwiperType } from 'swiper';
 
 interface Testimonial {
   id: number;
@@ -93,6 +94,15 @@ const mockTestimonials: Testimonial[] = [
 ];
 
 export default function TestimonialsSwiper() {
+  const [swiperRef, setSwiperRef] = useState<SwiperType | null>(null);
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
+
+  const handleSlideChange = (swiper: SwiperType) => {
+    setIsBeginning(swiper.isBeginning);
+    setIsEnd(swiper.isEnd);
+  };
+
   return (
     <div className="min-h-screen py-20 px-4">
       <div className="max-w-7xl mx-auto">
@@ -124,6 +134,16 @@ export default function TestimonialsSwiper() {
               clickable: true,
               bulletClass: "swiper-pagination-bullet-custom",
               bulletActiveClass: "swiper-pagination-bullet-active-custom",
+            }}
+            onSwiper={setSwiperRef}
+            onSlideChange={handleSlideChange}
+            onReachBeginning={() => setIsBeginning(true)}
+            onReachEnd={() => setIsEnd(true)}
+            onFromEdge={() => {
+              if (swiperRef) {
+                setIsBeginning(swiperRef.isBeginning);
+                setIsEnd(swiperRef.isEnd);
+              }
             }}
             className="testimonials-swiper max-w-[1000px]"
           >
@@ -172,7 +192,11 @@ export default function TestimonialsSwiper() {
 
           <button
             type="button"
-            className="swiper-button-prev-custom absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg cursor-pointer hover:bg-gray-50 transition-colors"
+            className={`swiper-button-prev-custom absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300 ${
+              isBeginning 
+                ? 'opacity-0 pointer-events-none' 
+                : 'opacity-100 cursor-pointer hover:bg-gray-50'
+            }`}
           >
             <svg
               className="w-6 h-6 text-gray-600"
@@ -191,7 +215,11 @@ export default function TestimonialsSwiper() {
 
           <button
             type="button"
-            className="swiper-button-next-custom absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg cursor-pointer hover:bg-gray-50 transition-colors"
+            className={`swiper-button-next-custom absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition-all duration-300 ${
+              isEnd 
+                ? 'opacity-0 pointer-events-none' 
+                : 'opacity-100 cursor-pointer hover:bg-gray-50'
+            }`}
           >
             <svg
               className="w-6 h-6 text-gray-600"
